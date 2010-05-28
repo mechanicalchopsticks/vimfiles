@@ -1,50 +1,118 @@
-filetype indent on
-"PERSONAL SETTINGS
-set nowrap
-set ignorecase
-set smartcase
+" --------
+" Settings
+" --------
+
+" Tabs and Spaces
+set tabstop=4
+set shiftwidth=4
+set softtabstop=4
+set autoindent
+set smartindent
+set smarttab
+set cindent
+
+" Misc
 set title
-set ruler
-set incsearch
-set visualbell
-set autochdir
 set number
-set mouse=a
-set scrolloff=3
+set ruler
+set showcmd
+set showmatch
+set visualbell
+set nowrap
+set hidden
+set nocompatible
 set history=1000
-"set shortmess=atI
-
-" shortcuts for moving windows
-nmap <C-j> <C-W>j
-nmap <C-k> <C-W>k
-nmap <C-h> <C-W>h
-nmap <C-l> <C-W>l
-
+set ignorecase 
+set smartcase
+set scrolloff=5
 
 "drop-down menu options
 set wildmenu
 set wildmode=list:longest
 set completeopt=longest,menuone
 
-""folding settings
-set foldmethod=indent   "fold based on indent
-set foldnestmax=10      "deepest fold is 10 levels
-set nofoldenable        "dont fold by default
-set foldlevel=1         "this is just what i use
+" save swaps to ~/.vim-tmp
+set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
+set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 
-"toggle highlighted search with c-n
+" File-type
+filetype on
+filetype plugin on
+filetype indent on
+syntax enable
+
+" Folding settings
+set foldmethod=indent	"fold based on indent
+set foldnestmax=10	"deepest fold is 10 levels
+set nofoldenable	"dont fold by default
+set foldlevel=1		"this is just what i use
+
+" Intuitive backspacing in insert mode
+set backspace=indent,eol,start
+
+" Highlight search terms...
+set hlsearch
+set incsearch " ...dynamically as they are typed.
+
+
+" --------
+" Mappings
+" --------
+
+" shortcuts for moving windows
+nmap <D-j> <C-W>j
+nmap <D-k> <C-W>k
+nmap <D-h> <C-W>h
+nmap <D-l> <C-W>l
+
+" Easy command mode switch
+inoremap jj <Esc>
+
+" Move with h & l in input mode
+inoremap <C-h> <Left>
+inoremap <C-l> <Right>
+
+" Go to next tab
+nmap <Tab> :tabn<CR>
+nmap <S-Tab> :tabp<CR>
+
+" Easy command mode switch
+inoremap jj <Esc>
+
+" Move lines of text around
+nnoremap <C-j> mz:m+<CR>`z==
+nnoremap <C-k> mz:m-2<CR>`z==
+inoremap <C-j> <Esc>:m+<CR>==gi
+inoremap <C-k> <Esc>:m-2<CR>==gi
+vnoremap <C-j> :m'>+<CR>gv=`<my`>mzgv`yo`z
+vnoremap <C-k> :m'<-2<CR>gv=`>my`<mzgv`yo`z
+
+"tame the completition menu
+inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+
+" show TODO list
+nnoremap <silent> <F2> :TaskList<CR>
+
+"show outline explorer 
+nnoremap <silent> <F3> :TlistToggle<CR>
+			
+"show project explorer
+nnoremap <silent> <C-N> :NERDTreeToggle<CR>
+
+
+" --------------
+" Misc Functions
+" --------------
+
+"toggle highlighted search with C-S
 function ToggleHLSearch()
        if &hls
-            set nohls
+	    set nohls
        else
-            set hls
+	    set hls
        endif
 endfunction
-nmap <silent> <C-n> <Esc>:call ToggleHLSearch()<CR>
-
-"remap f1 from help menu to esc
-map <F1> <Esc>
-imap <F1> <Esc>
+nmap <silent> <C-s> <Esc>:call ToggleHLSearch()<CR>
 
 "keymap for setting paste mode
 set pastetoggle=<C-x>
@@ -59,13 +127,14 @@ endfunction
 "map . to trigger omnifunc if it's defined
 imap <silent> <buffer> . <c-r>=DropDownMenu()<CR>
 
+" Pylint
 command Pylint :call Pylint()
 function! Pylint()
     setlocal makeprg=(echo\ '[%]';\ pylint\ %)
     setlocal efm=%+P[%f],%t:\ %#%l:%m
     silent make
     cwindow
-    endfunction
+endfunction
 
 command Pyflakes :call Pyflakes()
 fun! Pyflakes()
@@ -74,61 +143,124 @@ fun! Pyflakes()
 	cw
 endfunction
 
-nnoremap <F2> :set invnumber<CR>
-:highlight LineNr term=bold cterm=NONE ctermfg=DarkGrey ctermbg=NONE gui=NONE guifg=DarkGrey guibg=NONE
-
-" show TODO list
-nnoremap <silent> <F7> :TaskList<CR>
-
-"show outline explorer 
-nnoremap <silent> <F8> :TlistToggle<CR>
-"show project explorer
-nnoremap <silent> <F9> :NERDTreeToggle<CR>
+"sets soft wrap
+command! -nargs=* Wrap set wrap linebreak nolist
 
 "unravel one line xml files
-autocmd FileType xml nmap <F2> <Esc>:1,$!xmllint --format -<CR>
-autocmd FileType rst nmap <F2> <Esc>:make html<CR>
-
-" omnicomplete/supertab settings
-let g:SuperTabDefaultCompletionType="context"
-let g:SuperTabContextDefaultCompletionType="<c-x><c-k>"
-let g:SuperTabLongestHighlight = 1
-
-" Popup menu hightLight Group
-highlight Pmenu ctermbg=Blue guibg=LightGray
-highlight PmenuSel ctermbg=DarkRed guibg=DarkBlue guifg=White
-highlight PmenuSbar ctermbg=DarkGrey guibg=DarkGray
-highlight PmenuThumb guibg=Black
+autocmd FileType xml nmap <F9> <Esc>:1,$!xmllint --format -<CR>
+autocmd FileType rst nmap <F9> <Esc>:make html<CR>
 
 
-" --------------------
-" MiniBufExpl
-" --------------------
-let g:miniBufExplTabWrap = 1 " make tabs show complete (no broken on two lines)
-let g:miniBufExplModSelTarget = 1 " If you use other explorers like TagList you can (As of 6.2.8) set it at 1:
-let g:miniBufExplUseSingleClick = 1 " If you would like to single click on tabs rather than double clicking on them to goto the selected buffer.
-let g:miniBufExplMaxSize = 1 " <max lines: defualt 0> setting this to 0 will mean the window gets as big as needed to fit all your buffers.
-"let g:miniBufExplForceSyntaxEnable = 1 " There is a Vim bug that can cause buffers to show up without their highlighting. The following setting will cause MBE to
-"let g:miniBufExplorerMoreThanOne = 1 " Setting this to 0 will cause the MBE window to be loaded even
-let g:miniBufExplMapCTabSwitchBufs = 1
-"let g:miniBufExplMapWindowNavArrows = 1
-"for buffers that have NOT CHANGED and are NOT VISIBLE.
-highlight MBENormal  ctermfg=LightBlue  guibg=LightGray guifg=DarkGray
-" buffers that have NOT CHANGED and are VISIBLE
-highlight MBEVisibleNormal term=bold cterm=bold gui=bold guibg=Gray guifg=Black ctermbg=Blue  ctermfg=Green
-" for buffers that HAVE CHANGED and are NOT VISIBLE
-highlight MBEChanged ctermfg=DarkRed guibg=Red guifg=DarkRed
-" buffers that HAVE CHANGED and are VISIBLE
-highlight MBEVisibleChanged term=bold cterm=bold gui=bold guibg=DarkRed guifg=Black ctermbg=Blue ctermfg=Red
-" load pydiction's complete-dict
-let &dictionary = '~/.vim/vimfiles/ftplugin/pydiction/complete-dict'
+" --------
+" UI Theme 
+" --------
+let moria_style = 'dark'
+colorscheme mc_moria
+set gfn=Menlo
 
+
+
+let g:PythonFile = 0
+
+
+" --------------
+" Filetype Settings
+" --------------
+
+" Only do this part when compiled with support for autocommands
+if has("autocmd")
+	" autocmd! " remove all autocommands before set them again
+
+	" Surround conf
+	autocmd FileType php,ctp let b:surround_{char2nr("-")} = "<?php \r ?>"
+	autocmd FileType mako let b:surround_{char2nr("-")} = "${ \r }"
+	autocmd FileType mako let b:surround_{char2nr("%")} = "<% \r %>"
+	autocmd FileType php,html,ctp,mako let g:surround_{char2nr("d")} = "<div\1id: \r..*\r id=\"&\"\1>\r</div>"
+	autocmd FileType php,html,ctp,mako let g:surround_{char2nr("a")} = "<a\1href: \r..*\r href=\"&\"\1>\r</a>"
+
+	" activate auto close tag plugin on the next file types
+	autocmd Filetype html,xml,xsl,ctp,mako source ~/.vim/scripts/closetag.vim
+
+	" php syntax check
+	autocmd FileType php map <C-P> :!php -l %<Cr>
+
+	" Syntax of these languages is fussy over tabs Vs spaces
+	autocmd FileType make setlocal ts=8 sts=8 sw=8 noexpandtab
+	autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
+	autocmd FileType python setlocal ts=4 sts=4 sw=4 noexpandtab
+
+	" Customisations based on house-style (arbitrary)
+	autocmd FileType html setlocal ts=2 sts=2 sw=2 expandtab
+	autocmd FileType css setlocal ts=2 sts=2 sw=2 expandtab
+	autocmd FileType javascript setlocal ts=4 sts=4 sw=4 expandtab
+
+	" Treat .rss files as XML
+	autocmd BufNewFile,BufRead *.rss setfiletype xml
+
+	" Load file state like foldings
+	autocmd BufWinLeave * mkview
+	autocmd BufWinEnter *.* silent loadview
+
+	" Autocompleate settings based on the filetype
+	autocmd FileType python set omnifunc=pythoncomplete#Complete
+	autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
+	autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
+	autocmd FileType css set omnifunc=csscomplete#CompleteCSS
+	autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
+	autocmd FileType php set omnifunc=phpcomplete#CompletePHP
+	
+	autocmd FileType python let g:PythonFile = 1
+
+endif
+
+function CheckPython()
+	if g:PythonFile == 1
+			return "\<c-x>\<c-k>"
+	endif
+endfunction
+
+" Python syntax settings
+let &dictionary = '/Users/juan/.vim/vimfiles/ftplugin/pydiction/complete-dict'
 let python_higlight_all = 1
 let python_slow_sync = 1
 let python_print_as_function = 0
 
-" NERDTree Settings
-let g:NERDTreeWinPos = "right"
+
+" ----------
+" Plugin Settings
+" ----------
+
+runtime macros/matchit.vim
+
+" NERDTreee
+let NERDTreeIgnore=['\.pyc$', '\~$']
+
+" supertab settings
+let g:SuperTabDefaultCompletionType="context"
+let g:SuperTabContextDefaultCompletionType="<c-p>"
+let g:SuperTabLongestHighlight = 1
+let g:SuperTabCompletionContexts = ['CheckPython', 's:ContextText', 's:ContextDiscover']
+let g:SuperTabContextDiscoverDiscovery = ["&completefunc:<c-x><c-u>", "&omnifunc:<c-x><c-o>"] 
+
+" MiniBufExpl
+let g:miniBufExplTabWrap = 1 " make tabs show complete (no broken on two lines)
+let g:miniBufExplModSelTarget = 1 " If you use other explorers like TagList you can (As of 6.2.8) set it at 1:
+let g:miniBufExplUseSingleClick = 1 " If you would like to single click on tabs rather than double clicking on them to goto the selected buffer.
+let g:miniBufExplMaxSize = 1 " <max lines: defualt 0> setting this to 0 will mean the window gets as big as needed to fit all your buffers.
+let g:miniBufExplMapCTabSwitchBufs = 1
+
+"for buffers that have NOT CHANGED and are NOT VISIBLE.
+" highlight MBENormal  ctermfg=LightBlue	guibg=LightGray guifg=DarkGray
+
+" buffers that have NOT CHANGED and are VISIBLE
+" highlight MBEVisibleNormal term=bold cterm=bold gui=bold guibg=Gray guifg=Black ctermbg=Blue  ctermfg=Green
+0
+" for buffers that HAVE CHANGED and are NOT VISIBLE
+" highlight MBEChanged ctermfg=DarkRed guibg=Red guifg=DarkRed
+
+" buffers that HAVE CHANGED and are VISIBLE
+" highlight MBEVisibleChanged term=bold cterm=bold gui=bold guibg=DarkRed guifg=Black ctermbg=Blue ctermfg=Red
 
 " Tmux Settings
 let g:ScreenImpl = 'Tmux'
+
