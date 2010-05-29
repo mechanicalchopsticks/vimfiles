@@ -59,14 +59,14 @@ set incsearch " ...dynamically as they are typed.
 " Mappings
 " --------
 
-" shortcuts for moving windows
-nmap <D-j> <C-W>j
-nmap <D-k> <C-W>k
-nmap <D-h> <C-W>h
-nmap <D-l> <C-W>l
-
 " Easy command mode switch
 inoremap jj <Esc>
+
+" shortcuts for moving windows
+nmap <D-S-j> <C-W>j
+nmap <D-S-k> <C-W>k
+nmap <D-S-h> <C-W>h
+nmap <D-S-l> <C-W>l
 
 " Move with h & l in input mode
 inoremap <C-h> <Left>
@@ -75,9 +75,6 @@ inoremap <C-l> <Right>
 " Go to next tab
 nmap <Tab> :tabn<CR>
 nmap <S-Tab> :tabp<CR>
-
-" Easy command mode switch
-inoremap jj <Esc>
 
 " Move lines of text around
 nnoremap <C-j> mz:m+<CR>`z==
@@ -147,8 +144,8 @@ endfunction
 command! -nargs=* Wrap set wrap linebreak nolist
 
 "unravel one line xml files
-autocmd FileType xml nmap <F9> <Esc>:1,$!xmllint --format -<CR>
-autocmd FileType rst nmap <F9> <Esc>:make html<CR>
+autocmd FileType xml nmap <F7> <Esc>:1,$!xmllint --format -<CR>
+autocmd FileType rst nmap <F7> <Esc>:make html<CR>
 
 
 " --------
@@ -157,10 +154,6 @@ autocmd FileType rst nmap <F9> <Esc>:make html<CR>
 let moria_style = 'dark'
 colorscheme mc_moria
 set gfn=Menlo
-
-
-
-let g:PythonFile = 0
 
 
 " --------------
@@ -194,36 +187,20 @@ if has("autocmd")
 	autocmd FileType css setlocal ts=2 sts=2 sw=2 expandtab
 	autocmd FileType javascript setlocal ts=4 sts=4 sw=4 expandtab
 
-	" Treat .rss files as XML
-	autocmd BufNewFile,BufRead *.rss setfiletype xml
-
 	" Load file state like foldings
 	autocmd BufWinLeave * mkview
 	autocmd BufWinEnter *.* silent loadview
 
 	" Autocompleate settings based on the filetype
-	autocmd FileType python set omnifunc=pythoncomplete#Complete
-	autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
-	autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
-	autocmd FileType css set omnifunc=csscomplete#CompleteCSS
-	autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
-	autocmd FileType php set omnifunc=phpcomplete#CompletePHP
-	
-	autocmd FileType python let g:PythonFile = 1
-
 endif
 
-function CheckPython()
+" little hack 
+let g:PythonFile = 0
+function UsePythonDictCompletition()
 	if g:PythonFile == 1
-			return "\<c-x>\<c-k>"
+		return "\<c-x>\<c-k>"
 	endif
 endfunction
-
-" Python syntax settings
-let &dictionary = '/Users/juan/.vim/vimfiles/ftplugin/pydiction/complete-dict'
-let python_higlight_all = 1
-let python_slow_sync = 1
-let python_print_as_function = 0
 
 
 " ----------
@@ -239,7 +216,7 @@ let NERDTreeIgnore=['\.pyc$', '\~$']
 let g:SuperTabDefaultCompletionType="context"
 let g:SuperTabContextDefaultCompletionType="<c-p>"
 let g:SuperTabLongestHighlight = 1
-let g:SuperTabCompletionContexts = ['CheckPython', 's:ContextText', 's:ContextDiscover']
+let g:SuperTabCompletionContexts = ['s:ContextText', 'UsePythonDictCompletition', 's:ContextDiscover']
 let g:SuperTabContextDiscoverDiscovery = ["&completefunc:<c-x><c-u>", "&omnifunc:<c-x><c-o>"] 
 
 " MiniBufExpl
@@ -254,7 +231,7 @@ let g:miniBufExplMapCTabSwitchBufs = 1
 
 " buffers that have NOT CHANGED and are VISIBLE
 " highlight MBEVisibleNormal term=bold cterm=bold gui=bold guibg=Gray guifg=Black ctermbg=Blue  ctermfg=Green
-0
+
 " for buffers that HAVE CHANGED and are NOT VISIBLE
 " highlight MBEChanged ctermfg=DarkRed guibg=Red guifg=DarkRed
 
