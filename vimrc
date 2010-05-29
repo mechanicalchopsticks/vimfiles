@@ -59,14 +59,17 @@ set incsearch " ...dynamically as they are typed.
 " Mappings
 " --------
 
-" Easy command mode switch
+" Easy normal mode switch
 inoremap jj <Esc>
 
-" shortcuts for moving windows
-nmap <D-S-j> <C-W>j
-nmap <D-S-k> <C-W>k
-nmap <D-S-h> <C-W>h
-nmap <D-S-l> <C-W>l
+" mapp keyword completition to S-tab
+inoremap <M-Tab> <C-X><C-P>
+
+" shortcuts for moving windows to alt key
+nmap ∆ <C-W>j
+nmap ˚ <C-W>k
+nmap ˙ <C-W>h
+nmap ¬ <C-W>l
 
 " Move with h & l in input mode
 inoremap <C-h> <Left>
@@ -112,7 +115,7 @@ endfunction
 nmap <silent> <C-s> <Esc>:call ToggleHLSearch()<CR>
 
 "keymap for setting paste mode
-set pastetoggle=<C-x>
+"set pastetoggle=<C-x>
 
 function! DropDownMenu()
 	if exists('&omnifunc') && &omnifunc != ''
@@ -162,7 +165,8 @@ set gfn=Menlo
 
 " Only do this part when compiled with support for autocommands
 if has("autocmd")
-	" autocmd! " remove all autocommands before set them again
+	"remove all autocommands before set them again
+	autocmd!
 
 	" Surround conf
 	autocmd FileType php,ctp let b:surround_{char2nr("-")} = "<?php \r ?>"
@@ -195,7 +199,8 @@ if has("autocmd")
 endif
 
 " little hack 
-let g:python_file = 0
+" this is set to 1 if we are editing a python file in a FileType autocommand in filetypes.vim
+let g:python_file = 0 
 function UsePythonDictCompletition()
 	if g:python_file == 1
 		return "\<c-x>\<c-k>"
@@ -203,9 +208,9 @@ function UsePythonDictCompletition()
 endfunction
 
 
-" ----------
+" --------------
 " Plugin Settings
-" ----------
+" ---------------
 
 runtime macros/matchit.vim
 

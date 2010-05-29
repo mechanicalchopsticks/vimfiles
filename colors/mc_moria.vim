@@ -254,7 +254,7 @@ if &background == "dark"
 	hi pythonBuiltinFunc		guifg=#7ee0ce          
 	hi pythonException			guifg=#7ec0ee
 	hi pythonExClass			guifg=#66cd66
-	hi pythonSpaceError			guibg=#270000
+	hi pythonSpaceError			guibg=#201a1a
 	hi pythonDocTest			guifg=#2f5f49
 	hi pythonDocTest2			guifg=#3b916a
 	hi pythonFunction			guifg=#7ee0ce	
