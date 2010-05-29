@@ -14,7 +14,7 @@ augroup END
 augroup pythonsettings
 	au!
 	au FileType python let &dictionary = '/Users/juan/.vim/vimfiles/ftplugin/pydiction/complete-dict'
-	au FileType python let python_higlight_all = 1
+	au FileType python let python_highlight_all = 1
 	au FileType python let python_slow_sync = 1
 	au FileType python let python_print_as_function = 0
 

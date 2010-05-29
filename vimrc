@@ -195,9 +195,9 @@ if has("autocmd")
 endif
 
 " little hack 
-let g:PythonFile = 0
+let g:python_file = 0
 function UsePythonDictCompletition()
-	if g:PythonFile == 1
+	if g:python_file == 1
 		return "\<c-x>\<c-k>"
 	endif
 endfunction
