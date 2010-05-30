@@ -166,7 +166,7 @@ set gfn=Menlo
 " Only do this part when compiled with support for autocommands
 if has("autocmd")
 	"remove all autocommands before set them again
-	autocmd!
+	"autocmd!
 
 	" Surround conf
 	autocmd FileType php,ctp let b:surround_{char2nr("-")} = "<?php \r ?>"
