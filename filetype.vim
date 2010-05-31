@@ -17,10 +17,7 @@ augroup pythonsettings
 	au FileType python let python_highlight_all = 1
 	au FileType python let python_slow_sync = 1
 	au FileType python let python_print_as_function = 0
-
-	au FileType python let g:python_file = 1
 augroup END
-
 
 augroup completesettings
 	au!

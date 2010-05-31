@@ -170,7 +170,7 @@ if has("autocmd")
 
 	" Surround conf
 	autocmd FileType php,ctp let b:surround_{char2nr("-")} = "<?php \r ?>"
-	autocmd FileType mako let b:surround_{char2nr("-")} = "${ \r }"
+	autocmd FileType mako let b:surround_{char2nr("-")} = "${\r}"
 	autocmd FileType mako let b:surround_{char2nr("%")} = "<% \r %>"
 	autocmd FileType php,html,ctp,mako let g:surround_{char2nr("d")} = "<div\1id: \r..*\r id=\"&\"\1>\r</div>"
 	autocmd FileType php,html,ctp,mako let g:surround_{char2nr("a")} = "<a\1href: \r..*\r href=\"&\"\1>\r</a>"
@@ -200,9 +200,8 @@ endif
 
 " little hack 
 " this is set to 1 if we are editing a python file in a FileType autocommand in filetypes.vim
-let g:python_file = 0 
 function UsePythonDictCompletition()
-	if g:python_file == 1
+	if b:current_syntax == "python"
 		return "\<c-x>\<c-k>"
 	endif
 endfunction
