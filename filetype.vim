@@ -6,6 +6,7 @@ augroup filetypeedetect
 	au! BufRead,BufNewFile *.mako setfiletype mako 
 	au! BufRead,BufNewFile *.ctp setfiletype ctp
 	au! BufRead,BufNewFile *.less setfiletype less
+	au! BufRead,BufNewFile *.jinja setfiletype htmljinja
 	
 	" Treat .rss files as XML
 	au! BufNewFile,BufRead *.rss setfiletype xml
@@ -16,15 +17,16 @@ augroup pythonsettings
 	au FileType python let &dictionary = '/Users/juan/.vim/vimfiles/ftplugin/pydiction/complete-dict'
 	au FileType python let python_highlight_all = 1
 	au FileType python let python_slow_sync = 1
-	au FileType python let python_print_as_function = 0
+	au FileType python let python_print_as_function = 1
+	
 augroup END
 
-augroup completesettings
-	au!
-	autocmd FileType python set omnifunc=pythoncomplete#Complete
-	autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
-	autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
-	autocmd FileType css set omnifunc=csscomplete#CompleteCSS
-	autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
-	autocmd FileType php set omnifunc=phpcomplete#CompletePHP
-augroup END	
+"au FileType php let PHP_removeCRwhenUnix = 1
+
+au FileType python		set omnifunc=pythoncomplete#Complete
+au FileType javascript	set omnifunc=javascriptcomplete#CompleteJS
+au FileType css			set omnifunc=csscomplete#CompleteCSS
+au FileType less		set omnifunc=csscomplete#CompleteCSS
+au FileType xml			set omnifunc=xmlcomplete#CompleteTags
+au FileType php			set omnifunc=phpcomplete#CompletePHP
+au FileType html		set omnifunc=htmlcomplete#CompleteTags

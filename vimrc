@@ -26,10 +26,13 @@ set ignorecase
 set smartcase
 set scrolloff=5
 
-"drop-down menu options
+" Commadline completition options
 set wildmenu
 set wildmode=list:longest
+
+" menu options
 set completeopt=longest,menuone
+set ph=15
 
 " save swaps to ~/.vim-tmp
 set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
@@ -54,6 +57,9 @@ set backspace=indent,eol,start
 set hlsearch
 set incsearch " ...dynamically as they are typed.
 
+" Matching parens
+set mps=(:),{:},[:],<:>
+
 
 " --------
 " Mappings
@@ -66,6 +72,8 @@ inoremap jj <Esc>
 inoremap <M-Tab> <C-X><C-P>
 
 " shortcuts for moving windows to alt key
+
+" ∆ is alt j, ext
 nmap ∆ <C-W>j
 nmap ˚ <C-W>k
 nmap ˙ <C-W>h
@@ -104,7 +112,7 @@ nnoremap <silent> <C-N> :NERDTreeToggle<CR>
 " Misc Functions
 " --------------
 
-"toggle highlighted search with C-S
+" toggle highlighted search with ;h 
 function ToggleHLSearch()
        if &hls
 	    set nohls
@@ -112,10 +120,10 @@ function ToggleHLSearch()
 	    set hls
        endif
 endfunction
-nmap <silent> <C-s> <Esc>:call ToggleHLSearch()<CR>
+nmap <silent> ;h <Esc>:call ToggleHLSearch()<CR>
 
-"keymap for setting paste mode
-"set pastetoggle=<C-x>
+" keymap for setting paste mode
+" set pastetoggle=<C-x>
 
 function! DropDownMenu()
 	if exists('&omnifunc') && &omnifunc != ''
@@ -124,8 +132,9 @@ function! DropDownMenu()
 		return "."
 	endif
 endfunction
-"map . to trigger omnifunc if it's defined
-imap <silent> <buffer> . <c-r>=DropDownMenu()<CR>
+
+" map . to trigger omnifunc if it's defined
+" imap <silent> <buffer> . <c-r>=DropDownMenu()<CR>
 
 " Pylint
 command Pylint :call Pylint()
@@ -154,8 +163,9 @@ autocmd FileType rst nmap <F7> <Esc>:make html<CR>
 " --------
 " UI Theme 
 " --------
-let moria_style = 'dark'
-colorscheme mc_moria
+"let moria_style = 'dark'
+"colorscheme mc_moria
+colorscheme courier
 set gfn=Menlo
 
 
@@ -187,22 +197,19 @@ if has("autocmd")
 	autocmd FileType python setlocal ts=4 sts=4 sw=4 noexpandtab
 
 	" Customisations based on house-style (arbitrary)
-	autocmd FileType html setlocal ts=2 sts=2 sw=2 expandtab
-	autocmd FileType css setlocal ts=2 sts=2 sw=2 expandtab
-	autocmd FileType javascript setlocal ts=4 sts=4 sw=4 expandtab
+	" autocmd FileType html setlocal ts=2 sts=2 sw=2 expandtab
+	" autocmd FileType css setlocal ts=2 sts=2 sw=2 expandtab
+	" autocmd FileType javascript setlocal ts=4 sts=4 sw=4 expandtab
 
-	" Load file state like foldings
-	autocmd BufWinLeave * mkview
-	autocmd BufWinEnter *.* silent loadview
-
-	" Autocompleate settings based on the filetype
 endif
 
-" little hack 
-" this is set to 1 if we are editing a python file in a FileType autocommand in filetypes.vim
-function UsePythonDictCompletition()
+function UseFileTypeCompletition()
 	if b:current_syntax == "python"
 		return "\<c-x>\<c-k>"
+	endif
+
+	if b:current_syntax == "html"
+		return "\<c-x>\<c-o>"
 	endif
 endfunction
 
@@ -220,7 +227,7 @@ let NERDTreeIgnore=['\.pyc$', '\~$']
 let g:SuperTabDefaultCompletionType="context"
 let g:SuperTabContextDefaultCompletionType="<c-p>"
 let g:SuperTabLongestHighlight = 1
-let g:SuperTabCompletionContexts = ['s:ContextText', 'UsePythonDictCompletition', 's:ContextDiscover']
+let g:SuperTabCompletionContexts = ['s:ContextText', 'UseFileTypeCompletition', 's:ContextDiscover']
 let g:SuperTabContextDiscoverDiscovery = ["&completefunc:<c-x><c-u>", "&omnifunc:<c-x><c-o>"] 
 
 " MiniBufExpl
