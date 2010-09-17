@@ -1,4 +1,5 @@
 *.swp
 sessions
 view
+.netrwhist
 .DS_Store

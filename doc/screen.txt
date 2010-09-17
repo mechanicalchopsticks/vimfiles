@@ -53,7 +53,7 @@ installed with cygwin's bin directory in your windows PATH.
 
 Here is a sample workflow utilizing screen.vim to execute some python code in
 the python interactive interpreter:
-
+,n
   1. Edit a python file
      $ vim something.py
 

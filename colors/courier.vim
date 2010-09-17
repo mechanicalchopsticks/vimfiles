@@ -1,8 +1,8 @@
 " Vim color file
-" Name:       herald.vim
-" Author:     Fabio Cevasco <h3rald@h3rald.com>
-" Version:    0.2.0
-" Notes:      Supports 8, 16, 256 and 16,777,216 (RGB) color modes
+" Name:       Courier.vim
+" Author:     Juan Barrientos <mechanicalchopsticks@hgmail.com>
+" Version:    0.0.1
+" Notes:      Supports 256 and 16,777,216 (RGB) color modes
 
 hi clear
 
@@ -10,7 +10,7 @@ if exists("syntax_on")
 	syntax reset
 endif
 
-let colors_name = "herald"
+let colors_name = "courier"
 
 set background=dark
 
@@ -51,8 +51,8 @@ if has("gui_running")
 	hi ModeMsg        guibg=bg      	guifg=#FFA500 		gui=none
 
 	" -> Search 
-	hi Search         guibg=#DEC5B6		guifg=#EBDEC7		gui=none 
-	hi IncSearch      guibg=#DEC5B6		guifg=#EBDEC7		gui=none
+	hi Search         guibg=#DEC5B6		guifg=bg			gui=none 
+	hi IncSearch      guibg=#DEC5B6		guifg=bg			gui=none
 
 	" -> Diff
 	hi DiffAdd        guibg=#006124		guifg=#ED9000		gui=none

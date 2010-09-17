@@ -3,13 +3,20 @@
 " --------
 
 " Tabs and Spaces
+set nocompatible
+set hidden
+
+set nowrap
 set tabstop=4
 set shiftwidth=4
 set softtabstop=4
+set shiftround
+set smarttab
+
 set autoindent
 set smartindent
-set smarttab
-set cindent
+set copyindent
+"set cindent
 
 " Misc
 set title
@@ -17,21 +24,24 @@ set number
 set ruler
 set showcmd
 set showmatch
-set visualbell
-set nowrap
-set hidden
-set nocompatible
-set history=1000
+
 set ignorecase 
 set smartcase
+
+set visualbell
+set noerrorbells
 set scrolloff=5
+set t_vb=
+set history=1000
+set undolevels=100
 
 " Commadline completition options
 set wildmenu
 set wildmode=list:longest
+set wildignore=*.swp,*.bak,*.pyc,*.class
 
 " menu options
-set completeopt=longest,menuone
+set completeopt=longest,menu
 set ph=15
 
 " save swaps to ~/.vim-tmp
@@ -60,6 +70,9 @@ set incsearch " ...dynamically as they are typed.
 " Matching parens
 set mps=(:),{:},[:],<:>
 
+" Go to next line
+set whichwrap+=<,>
+
 
 " --------
 " Mappings
@@ -71,8 +84,38 @@ inoremap jj <Esc>
 " mapp keyword completition to S-tab
 inoremap <M-Tab> <C-X><C-P>
 
-" shortcuts for moving windows to alt key
+"  In visual mode when you press * or # to search for the current selection
+vnoremap <silent> * :call VisualSearch('f')<CR>
+vnoremap <silent> # :call VisualSearch('b')<CR>
 
+function! CmdLine(str)
+    exe "menu Foo.Bar :" . a:str
+    emenu Foo.Bar
+    unmenu Foo
+endfunction 
+
+" From an idea by Michael Naumann
+function! VisualSearch(direction) range
+    let l:saved_reg = @"
+    execute "normal! vgvy"
+
+    let l:pattern = escape(@", '\\/.*$^~[]')
+    let l:pattern = substitute(l:pattern, "\n$", "", "")
+
+    if a:direction == 'b'
+        execute "normal ?" . l:pattern . "^M"
+    elseif a:direction == 'gv'
+        call CmdLine("vimgrep " . '/'. l:pattern . '/' . ' **/*.')
+    elseif a:direction == 'f'
+        execute "normal /" . l:pattern . "^M"
+    endif
+
+    let @/ = l:pattern
+    let @" = l:saved_reg
+endfunction
+
+
+" shortcuts for moving windows to alt key
 " ∆ is alt j, ext
 nmap ∆ <C-W>j
 nmap ˚ <C-W>k
@@ -98,6 +141,11 @@ vnoremap <C-k> :m'<-2<CR>gv=`>my`<mzgv`yo`z
 "tame the completition menu
 inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
+inoremap <expr> <C-n> pumvisible() ? '<C-n>' : '<C-n><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
+
+inoremap <expr> <M-,> pumvisible() ? '<C-n>' : '<C-x><C-o><C-n><C-p><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
+
+
 " show TODO list
 nnoremap <silent> <F2> :TaskList<CR>
 
@@ -105,7 +153,9 @@ nnoremap <silent> <F2> :TaskList<CR>
 nnoremap <silent> <F3> :TlistToggle<CR>
 			
 "show project explorer
-nnoremap <silent> <C-N> :NERDTreeToggle<CR>
+nmap ,n :NERDTreeClose<CR>:NERDTreeToggle<CR>
+nmap ,m :NERDTreeClose<CR>:NERDTreeFind<CR>
+nmap ,N :NERDTreeClose<CR>
 
 
 " --------------
@@ -163,9 +213,16 @@ autocmd FileType rst nmap <F7> <Esc>:make html<CR>
 " --------
 " UI Theme 
 " --------
-"let moria_style = 'dark'
-"colorscheme mc_moria
-colorscheme courier
+
+if &t_Co >= 256 || has("gui_running")
+   colorscheme courier
+endif
+
+if &t_Co > 2 || has("gui_running")
+   " switch syntax highlighting on, when the terminal has colors
+   syntax on
+endif
+
 set gfn=Menlo
 
 
@@ -217,11 +274,23 @@ endfunction
 " --------------
 " Plugin Settings
 " ---------------
+call pathogen#runtime_append_all_bundles()
 
 runtime macros/matchit.vim
 
 " NERDTreee
-let NERDTreeIgnore=['\.pyc$', '\~$']
+"let NERDTreeBookmarksFile=expand("$HOME/.vim/NERDTreeBookmarks")
+
+" Don't display these kinds of files
+let NERDTreeIgnore=['\.pyc$', '\.pyo$', '\.py\$class$', '\.obj$', '\.o$', '\.so$', '\.egg$', '^\.git$', '^\.svn$', '^\.hg$', '^\.DS_Store$', '^\.gitignore$', '^\.hgignore$']
+
+let NERDTreeShowBookmarks=1        " Show the bookmarks table on startup
+let NERDTreeShowFiles=1            " Show hidden files, too
+let NERDTreeShowHidden=1
+"let NERDTreeQuitOnOpen=1          " Quit on opening files from the tree
+let NERDTreeHighlightCursorline=1  " Highlight the selected entry in the tree
+let NERDTreeMouseMode=2            " Use a single click to fold/unfold directories
+                                   " and a double click to open files
 
 " supertab settings
 let g:SuperTabDefaultCompletionType="context"
@@ -248,7 +317,3 @@ let g:miniBufExplMapCTabSwitchBufs = 1
 
 " buffers that HAVE CHANGED and are VISIBLE
 " highlight MBEVisibleChanged term=bold cterm=bold gui=bold guibg=DarkRed guifg=Black ctermbg=Blue ctermfg=Red
-
-" Tmux Settings
-let g:ScreenImpl = 'Tmux'
-

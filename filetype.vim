@@ -30,3 +30,4 @@ au FileType less		set omnifunc=csscomplete#CompleteCSS
 au FileType xml			set omnifunc=xmlcomplete#CompleteTags
 au FileType php			set omnifunc=phpcomplete#CompletePHP
 au FileType html		set omnifunc=htmlcomplete#CompleteTags
+
