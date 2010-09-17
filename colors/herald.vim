@@ -356,7 +356,7 @@ elseif &t_Co == 8
 
 	" -> HTML-specific
 hi htmlBold                  ctermbg=8 ctermfg=7 cterm=bold
-	hi htmlBoldItalic            ctermbg=8 ctermfg=7 cterm=bold,itali
+	hi htmlBoldItalic            ctermbg=8 ctermfg=7 cterm=bold,italic
 	hi htmlBoldUnderline         ctermbg=8 ctermfg=7 cterm=bold,underline
 	hi htmlBoldUnderlineItalic   ctermbg=8 ctermfg=7 cterm=bold,underline,italic
 	hi htmlItalic                ctermbg=8 ctermfg=7 cterm=italic
