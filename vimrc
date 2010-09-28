@@ -5,6 +5,7 @@
 " Tabs and Spaces
 set nocompatible
 set hidden
+set swb=usetab
 
 set nowrap
 set tabstop=4
@@ -35,6 +36,9 @@ set t_vb=
 set history=1000
 set undolevels=100
 
+
+let mapleader=","
+
 " Commadline completition options
 set wildmenu
 set wildmode=list:longest
@@ -47,6 +51,10 @@ set ph=15
 " save swaps to ~/.vim-tmp
 set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
+
+
+" let Pathogen do its magic
+call pathogen#runtime_append_all_bundles()
 
 " File-type
 filetype on
@@ -67,8 +75,6 @@ set backspace=indent,eol,start
 set hlsearch
 set incsearch " ...dynamically as they are typed.
 
-" Matching parens
-set mps=(:),{:},[:],<:>
 
 " Go to next line
 set whichwrap+=<,>
@@ -78,10 +84,23 @@ set whichwrap+=<,>
 " Mappings
 " --------
 
+" disable arrow keys
+inoremap  <Up>     <NOP>
+inoremap  <Down>   <NOP>
+inoremap  <Left>   <NOP>
+inoremap  <Right>  <NOP>
+noremap   <Up>     <NOP>
+noremap   <Down>   <NOP>
+noremap   <Left>   <NOP>
+noremap   <Right>  <NOP>
+
+
+
+
 " Easy normal mode switch
 inoremap jj <Esc>
 
-" mapp keyword completition to S-tab
+" map keyword completition to S-tab
 inoremap <M-Tab> <C-X><C-P>
 
 "  In visual mode when you press * or # to search for the current selection
@@ -140,11 +159,8 @@ vnoremap <C-k> :m'<-2<CR>gv=`>my`<mzgv`yo`z
 
 "tame the completition menu
 inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-
 inoremap <expr> <C-n> pumvisible() ? '<C-n>' : '<C-n><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
-
 inoremap <expr> <M-,> pumvisible() ? '<C-n>' : '<C-x><C-o><C-n><C-p><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
-
 
 " show TODO list
 nnoremap <silent> <F2> :TaskList<CR>
@@ -153,9 +169,9 @@ nnoremap <silent> <F2> :TaskList<CR>
 nnoremap <silent> <F3> :TlistToggle<CR>
 			
 "show project explorer
-nmap ,n :NERDTreeClose<CR>:NERDTreeToggle<CR>
-nmap ,m :NERDTreeClose<CR>:NERDTreeFind<CR>
-nmap ,N :NERDTreeClose<CR>
+nmap <leader>n :NERDTreeClose<CR>:NERDTreeToggle<CR>
+nmap <leader>m :NERDTreeClose<CR>:NERDTreeFind<CR>
+nmap <leader>M :NERDTreeClose<CR>
 
 
 " --------------
@@ -170,7 +186,7 @@ function ToggleHLSearch()
 	    set hls
        endif
 endfunction
-nmap <silent> ;h <Esc>:call ToggleHLSearch()<CR>
+nmap <silent> <leader>h <Esc>:call ToggleHLSearch()<CR>
 
 " keymap for setting paste mode
 " set pastetoggle=<C-x>
@@ -210,6 +226,9 @@ autocmd FileType xml nmap <F7> <Esc>:1,$!xmllint --format -<CR>
 autocmd FileType rst nmap <F7> <Esc>:make html<CR>
 
 
+nmap <leader>r <Esc>:call rainbow_parentheses#Toggle()<CR>
+
+
 " --------
 " UI Theme 
 " --------
@@ -236,7 +255,7 @@ if has("autocmd")
 	"autocmd!
 
 	" Surround conf
-	autocmd FileType php,ctp let b:surround_{char2nr("-")} = "<?php \r ?>"
+	autocmd FileType php,ctp,html let b:surround_{char2nr("-")} = "<?php \r ?>"
 	autocmd FileType mako let b:surround_{char2nr("-")} = "${\r}"
 	autocmd FileType mako let b:surround_{char2nr("%")} = "<% \r %>"
 	autocmd FileType php,html,ctp,mako let g:surround_{char2nr("d")} = "<div\1id: \r..*\r id=\"&\"\1>\r</div>"
@@ -246,7 +265,7 @@ if has("autocmd")
 	autocmd Filetype html,xml,xsl,ctp,mako source ~/.vim/scripts/closetag.vim
 
 	" php syntax check
-	autocmd FileType php map <C-P> :!php -l %<Cr>
+	autocmd FileType php map <leader>s :!php -l %<Cr>
 
 	" Syntax of these languages is fussy over tabs Vs spaces
 	autocmd FileType make setlocal ts=8 sts=8 sw=8 noexpandtab
@@ -274,9 +293,7 @@ endfunction
 " --------------
 " Plugin Settings
 " ---------------
-call pathogen#runtime_append_all_bundles()
 
-runtime macros/matchit.vim
 
 " NERDTreee
 "let NERDTreeBookmarksFile=expand("$HOME/.vim/NERDTreeBookmarks")
@@ -291,6 +308,8 @@ let NERDTreeShowHidden=1
 let NERDTreeHighlightCursorline=1  " Highlight the selected entry in the tree
 let NERDTreeMouseMode=2            " Use a single click to fold/unfold directories
                                    " and a double click to open files
+" NerdCommenter
+let NERDCommenterToggle=',/'
 
 " supertab settings
 let g:SuperTabDefaultCompletionType="context"
@@ -304,7 +323,7 @@ let g:miniBufExplTabWrap = 1 " make tabs show complete (no broken on two lines)
 let g:miniBufExplModSelTarget = 1 " If you use other explorers like TagList you can (As of 6.2.8) set it at 1:
 let g:miniBufExplUseSingleClick = 1 " If you would like to single click on tabs rather than double clicking on them to goto the selected buffer.
 let g:miniBufExplMaxSize = 1 " <max lines: defualt 0> setting this to 0 will mean the window gets as big as needed to fit all your buffers.
-let g:miniBufExplMapCTabSwitchBufs = 1
+let g:miniBufExplMapCTabSwitchBufs = 0
 
 "for buffers that have NOT CHANGED and are NOT VISIBLE.
 " highlight MBENormal  ctermfg=LightBlue	guibg=LightGray guifg=DarkGray

@@ -21,6 +21,12 @@ augroup pythonsettings
 	
 augroup END
 
+augroup matchit
+	au!
+	au FileType ctp,html,htmljinja,mako let b:match_words +=  '<.\{-}>:<[^>]*>'
+augroup END
+
+
 "au FileType php let PHP_removeCRwhenUnix = 1
 
 au FileType python		set omnifunc=pythoncomplete#Complete
@@ -30,4 +36,3 @@ au FileType less		set omnifunc=csscomplete#CompleteCSS
 au FileType xml			set omnifunc=xmlcomplete#CompleteTags
 au FileType php			set omnifunc=phpcomplete#CompletePHP
 au FileType html		set omnifunc=htmlcomplete#CompleteTags
-

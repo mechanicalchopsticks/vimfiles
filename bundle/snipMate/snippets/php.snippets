@@ -182,7 +182,7 @@ snippet elseif
 		${2:// code...}
 	}
 # Tertiary conditional
-snippet ?
+snippet t
 	$${1:retVal} = (${2:condition}) ? ${3:a} : ${4:b};${5}
 snippet switch
 	switch ($${1:variable}) {
@@ -207,17 +207,10 @@ snippet foreach
 		${3:// code...}
 	}
 snippet fun
-	${1:public }function ${2:FunctionName}(${3}) {
+	${1:public }function ${2:FunctionName}(${3})
+	{
 		${4:// code...}
 	}
 # $... = array (...)
-snippet $array
-	$${1:arrayName} = array('${2}' => ${3});${4}
-
-#array ('' => ...)
 snippet array
-	array('${1}' => ${2})${3}
-
-# !empty(...)
-snippet !e
-	!empty(${1:varName})
+	$${1:arrayName} = array('${2}' => ${3});${4}

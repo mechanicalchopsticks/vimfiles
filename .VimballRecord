@@ -1,2 +1,2 @@
-supertab.vba: call delete('/home/jtriley/.vim/doc/supertab.txt')|call delete('/home/jtriley/.vim/plugin/supertab.vim')
-screen.vba: call delete('/home/jtriley/.vim/doc/screen.txt')|call delete('/home/jtriley/.vim/plugin/screen.vim')
+supertab.vba: call delete('/Users/juan/.vim/doc/supertab.txt')|call delete('/Users/juan/.vim/plugin/supertab.vim')
+screen.vba: call delete('/Users/juan/.vim/autoload/screen.vim')|call delete('/Users/juan/.vim/doc/screen.txt')|call delete('/Users/juan/.vim/plugin/screen.vim')
